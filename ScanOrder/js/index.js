@@ -37,6 +37,7 @@ var app = {
         navigator.splashscreen.hide();
         
         console.log('[IC] App is Ready.');
+        console.log('cordova.plugins.barcodeScanner = '+cordova.plugins.barcodeScanner);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -50,3 +51,27 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+
+function startScan(){
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          console.log("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+      }, 
+      function (error) {
+          console.log("Scanning failed: " + error);
+      }
+   );
+}
+
+function getSFSDKVersion(){
+    var sdkinfo = plugin.sdkinfo;
+    sdkinfo.getInfo(new function(info) {
+        console.log("sdkVersion->" + info.sdkVersion);
+        console.log("appName->" + info.appName);
+        console.log("appVersion->" + info.appVersion);
+        console.log("forcePluginsAvailable->" + JSON.stringify(info.forcePluginsAvailable));
+    });
+}
